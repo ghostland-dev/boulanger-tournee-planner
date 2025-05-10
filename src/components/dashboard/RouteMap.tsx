@@ -9,7 +9,7 @@ export function RouteMap() {
         <CardTitle>Tournée du jour</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <Tabs defaultValue="map" className="h-full">
+        <Tabs defaultValue="map" className="h-full space-y-0">
           <div className="flex items-center justify-between px-6 pt-2 pb-4">
             <div className="flex-grow"></div>
             <TabsList className="grid w-[180px] grid-cols-2">
@@ -18,7 +18,7 @@ export function RouteMap() {
             </TabsList>
           </div>
 
-          <TabsContent value="map" className="m-0">
+          <TabsContent value="map" className="m-0 border-0">
             <div className="relative h-[350px] bg-gray-100 rounded-b-lg flex items-center justify-center">
               {/* Map would be rendered here with Leaflet.js */}
               <div className="text-center p-4">
@@ -48,7 +48,7 @@ export function RouteMap() {
             </div>
           </TabsContent>
 
-          <TabsContent value="list" className="m-0">
+          <TabsContent value="list" className="m-0 border-0">
             <div className="p-4 h-[350px] overflow-y-auto">
               <div className="space-y-4">
                 {["08:00", "08:30", "09:15", "09:45", "10:30"].map((time, i) => (
