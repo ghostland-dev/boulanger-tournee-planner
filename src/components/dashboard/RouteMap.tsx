@@ -1,15 +1,38 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+// Dynamic import for Leaflet (to avoid SSR issues)
+const LeafletMap = dynamic(() => import("../maps/LeafletMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[350px] bg-gray-100 rounded-lg flex items-center justify-center">
+      <p className="text-muted-foreground">Chargement de la carte...</p>
+    </div>
+  ),
+});
+
+// Sample bakery delivery points in Lyon, France
+const deliveryPoints = [
+  { id: 1, name: "Café du Coin", position: [45.7640, 4.8357], time: "08:00", order: "3 baguettes, 2 pains au chocolat" },
+  { id: 2, name: "Restaurant L'Étoile", position: [45.7578, 4.8320], time: "08:30", order: "10 baguettes, 5 ficelles" },
+  { id: 3, name: "Hôtel Splendide", position: [45.7597, 4.8422], time: "09:15", order: "15 croissants, 8 pains au chocolat" },
+  { id: 4, name: "Bistrot des Amis", position: [45.7530, 4.8289], time: "09:45", order: "6 baguettes, 4 pains au levain" },
+  { id: 5, name: "Epicerie Fine", position: [45.7675, 4.8307], time: "10:30", order: "4 pains spéciaux, 8 viennoiseries" }
+];
 
 export function RouteMap() {
+  const [activeTab, setActiveTab] = useState<string>("map");
+
   return (
     <Card className="col-span-3 h-[450px] animate-slide-in">
       <CardHeader>
         <CardTitle>Tournée du jour</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <Tabs defaultValue="map" className="h-full">
+        <Tabs defaultValue="map" className="h-full" onValueChange={setActiveTab}>
           <div className="px-6 pb-4">
             <TabsList className="grid w-[180px] grid-cols-2 ml-auto">
               <TabsTrigger value="map">Carte</TabsTrigger>
@@ -18,47 +41,25 @@ export function RouteMap() {
           </div>
 
           <TabsContent value="map" className="m-0 border-0">
-            <div className="relative h-[350px] bg-gray-100 rounded-b-lg flex items-center justify-center">
-              {/* Map would be rendered here with Leaflet.js */}
-              <div className="text-center p-4">
-                <p className="text-muted-foreground mb-2">La carte sera affichée ici</p>
-                <p className="text-xs text-muted-foreground">Cette fonctionnalité nécessite l'intégration avec Leaflet.js ou Google Maps API</p>
-                <div className="w-full h-[280px] bg-white rounded-lg mt-2 border-2 border-dashed border-gray-300 flex items-center justify-center">
-                  <div className="p-4">
-                    <div className="w-full max-w-xs mx-auto">
-                      <div className="h-4 w-3/4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-32 bg-gray-200 rounded-lg mb-3"></div>
-                      <div className="flex space-x-2 mb-2">
-                        <div className="h-3 w-3 bg-baker-brown rounded-full"></div>
-                        <div className="h-3 w-1/3 bg-gray-200 rounded"></div>
-                      </div>
-                      <div className="flex space-x-2 mb-2">
-                        <div className="h-3 w-3 bg-baker-orange rounded-full"></div>
-                        <div className="h-3 w-1/2 bg-gray-200 rounded"></div>
-                      </div>
-                      <div className="flex space-x-2">
-                        <div className="h-3 w-3 bg-gray-400 rounded-full"></div>
-                        <div className="h-3 w-1/4 bg-gray-200 rounded"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="h-[350px]">
+              {activeTab === "map" && <LeafletMap deliveryPoints={deliveryPoints} />}
             </div>
           </TabsContent>
 
           <TabsContent value="list" className="m-0 border-0">
             <div className="p-4 h-[350px] overflow-y-auto">
               <div className="space-y-4">
-                {["08:00", "08:30", "09:15", "09:45", "10:30"].map((time, i) => (
-                  <div key={i} className="flex items-start">
+                {deliveryPoints.map((point) => (
+                  <div key={point.id} className="flex items-start">
                     <div className="flex-shrink-0 w-12 text-sm font-medium text-muted-foreground">
-                      {time}
+                      {point.time}
                     </div>
                     <div className="ml-2 bg-secondary p-3 rounded-lg flex-grow">
-                      <div className="font-medium">{["Café du Coin", "Restaurant L'Étoile", "Hôtel Splendide", "Bistrot des Amis", "Epicerie Fine"][i]}</div>
-                      <div className="text-sm text-muted-foreground">{["23 Rue de Paris", "45 Avenue Gambetta", "12 Place Bellecour", "89 Rue Garibaldi", "56 Rue Victor Hugo"][i]}, Lyon</div>
-                      <div className="mt-1 text-xs font-medium">{["3 baguettes, 2 pains au chocolat", "10 baguettes, 5 ficelles", "15 croissants, 8 pains au chocolat", "6 baguettes, 4 pains au levain", "4 pains spéciaux, 8 viennoiseries"][i]}</div>
+                      <div className="font-medium">{point.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {`${Math.floor(Math.random() * 100)} Rue ${["de Paris", "Victor Hugo", "Garibaldi", "République", "Berthelot"][Math.floor(Math.random() * 5)]}`}, Lyon
+                      </div>
+                      <div className="mt-1 text-xs font-medium">{point.order}</div>
                     </div>
                   </div>
                 ))}
