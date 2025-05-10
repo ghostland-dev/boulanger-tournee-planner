@@ -10,14 +10,11 @@ export function RouteMap() {
       </CardHeader>
       <CardContent className="p-0">
         <Tabs defaultValue="map" className="h-full">
-          <div className="px-6 pt-2 pb-4">
-            <div className="flex items-center justify-between">
-              <div className="flex-grow"></div>
-              <TabsList className="grid w-[180px] grid-cols-2">
-                <TabsTrigger value="map">Carte</TabsTrigger>
-                <TabsTrigger value="list">Liste</TabsTrigger>
-              </TabsList>
-            </div>
+          <div className="px-6 pb-4">
+            <TabsList className="grid w-[180px] grid-cols-2 ml-auto">
+              <TabsTrigger value="map">Carte</TabsTrigger>
+              <TabsTrigger value="list">Liste</TabsTrigger>
+            </TabsList>
           </div>
 
           <TabsContent value="map" className="m-0 border-0">
