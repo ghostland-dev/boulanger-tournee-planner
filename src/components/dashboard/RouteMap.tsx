@@ -6,23 +6,25 @@ export function RouteMap() {
   return (
     <Card className="col-span-3 h-[450px] animate-slide-in">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Tournée du jour</CardTitle>
-          <TabsList className="grid w-[180px] grid-cols-2">
-            <TabsTrigger value="map">Carte</TabsTrigger>
-            <TabsTrigger value="list">Liste</TabsTrigger>
-          </TabsList>
-        </div>
+        <CardTitle>Tournée du jour</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <Tabs defaultValue="map">
+        <Tabs defaultValue="map" className="h-full">
+          <div className="flex items-center justify-between px-6 pt-2 pb-4">
+            <div className="flex-grow"></div>
+            <TabsList className="grid w-[180px] grid-cols-2">
+              <TabsTrigger value="map">Carte</TabsTrigger>
+              <TabsTrigger value="list">Liste</TabsTrigger>
+            </TabsList>
+          </div>
+
           <TabsContent value="map" className="m-0">
-            <div className="relative h-[380px] bg-gray-100 rounded-b-lg flex items-center justify-center">
+            <div className="relative h-[350px] bg-gray-100 rounded-b-lg flex items-center justify-center">
               {/* Map would be rendered here with Leaflet.js */}
               <div className="text-center p-4">
                 <p className="text-muted-foreground mb-2">La carte sera affichée ici</p>
                 <p className="text-xs text-muted-foreground">Cette fonctionnalité nécessite l'intégration avec Leaflet.js ou Google Maps API</p>
-                <div className="w-full h-[320px] bg-white rounded-lg mt-2 border-2 border-dashed border-gray-300 flex items-center justify-center">
+                <div className="w-full h-[280px] bg-white rounded-lg mt-2 border-2 border-dashed border-gray-300 flex items-center justify-center">
                   <div className="p-4">
                     <div className="w-full max-w-xs mx-auto">
                       <div className="h-4 w-3/4 bg-gray-200 rounded mb-2"></div>
@@ -45,8 +47,9 @@ export function RouteMap() {
               </div>
             </div>
           </TabsContent>
+
           <TabsContent value="list" className="m-0">
-            <div className="p-4 h-[380px] overflow-y-auto">
+            <div className="p-4 h-[350px] overflow-y-auto">
               <div className="space-y-4">
                 {["08:00", "08:30", "09:15", "09:45", "10:30"].map((time, i) => (
                   <div key={i} className="flex items-start">
