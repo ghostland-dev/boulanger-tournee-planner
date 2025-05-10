@@ -17,7 +17,7 @@ interface LeafletMapProps {
 }
 
 const LeafletMap: React.FC<LeafletMapProps> = ({ deliveryPoints }) => {
-  // Fix for default icons in Leaflet with webpack
+  // Fix for default icons in Leaflet with webpack/vite
   useEffect(() => {
     delete (L.Icon.Default.prototype as any)._getIconUrl;
     L.Icon.Default.mergeOptions({

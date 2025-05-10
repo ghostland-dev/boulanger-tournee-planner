@@ -1,18 +1,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import { Suspense, lazy, useState } from "react";
 
-// Dynamic import for Leaflet (to avoid SSR issues)
-const LeafletMap = dynamic(() => import("../maps/LeafletMap"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-[350px] bg-gray-100 rounded-lg flex items-center justify-center">
-      <p className="text-muted-foreground">Chargement de la carte...</p>
-    </div>
-  ),
-});
+// Lazy load LeafletMap component for better performance
+const LeafletMap = lazy(() => import("../maps/LeafletMap"));
 
 // Sample bakery delivery points in Lyon, France
 const deliveryPoints = [
@@ -42,7 +34,15 @@ export function RouteMap() {
 
           <TabsContent value="map" className="m-0 border-0">
             <div className="h-[350px]">
-              {activeTab === "map" && <LeafletMap deliveryPoints={deliveryPoints} />}
+              {activeTab === "map" && (
+                <Suspense fallback={
+                  <div className="h-[350px] bg-gray-100 rounded-lg flex items-center justify-center">
+                    <p className="text-muted-foreground">Chargement de la carte...</p>
+                  </div>
+                }>
+                  <LeafletMap deliveryPoints={deliveryPoints} />
+                </Suspense>
+              )}
             </div>
           </TabsContent>
 
